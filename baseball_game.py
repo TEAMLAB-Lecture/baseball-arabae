@@ -133,7 +133,7 @@ def get_not_duplicated_three_digit_number():
     # get_random_number() 함수를 사용하여 random number 생성
 
     result = get_random_number()
-    while len(set(str(result))) != 3:
+    while is_duplicated_number(str(result)):
         result = get_random_number()
     return result
 
@@ -236,45 +236,28 @@ def main():
     random_number = str(get_not_duplicated_three_digit_number())
     print("Random Number is : ", random_number)
     # ===Modify codes below=============
-    user_input = str(user_input)
-
     while user_input != '0':
         user_input = input('Input guess number : ')
         if user_input == '0': break
 
-        while not is_validated_number(user_input):
+        if not is_validated_number(user_input):
             print('Wrong Input, Input again')
-            user_input = input('Input guess number : ')
 
-            if user_input == '0': break
-        if user_input == '0': break
-
-        game_result = get_strikes_or_ball(user_input, random_number)
-        while game_result[0] != 3:
+        else:
+            game_result = get_strikes_or_ball(user_input, random_number)
             print('Strikes : ', game_result[0], ' Balls : ', game_result[1])
 
-            user_input = input('Input guess number : ')
-            if user_input == '0': break
+            if game_result[0] == 3:
+                replay = input('You win, one more(Y/N)?')
 
-            while not is_validated_number(user_input):
-                print('Wrong Input, Input again')
-                user_input = input('Input guess number : ')
+                while not is_yes(replay) and not is_no(replay):
+                    print('Wrong Input, Input again')
+                    replay = input('You win, one more(Y/N)?')
 
-                if user_input == '0': break
-            if user_input == '0': break
-            game_result = get_strikes_or_ball(user_input, random_number)
-        if user_input == '0': break
-        print('Strikes : ', game_result[0], ' Balls : ', game_result[1])
-
-        replay = input('You win, one more(Y/N)?')
-        while not is_yes(replay) and not is_no(replay):
-            print('Wrong Input, Input again')
-            replay = input('You win, one more(Y/N)?')
-
-        if is_no(replay): break
-
-        random_number = str(get_not_duplicated_three_digit_number())
-        print("Random Number is : ", random_number)
+                if is_no(replay): break
+                else:
+                    random_number = str(get_not_duplicated_three_digit_number())
+                    print("Random Number is : ", random_number)
 
     # ==================================
     print("Thank you for using this program")
